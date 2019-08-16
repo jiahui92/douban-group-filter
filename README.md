@@ -1,12 +1,12 @@
 # douban-group-filter
 豆瓣小组增加筛选功能，方便找房
 
-# 启动
+## 启动
 * yarn install
 * yarn server
 * yarn build
 
-# 选型
+## 选型
 * vue-cli
 * element-vue
 
