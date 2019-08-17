@@ -15,3 +15,5 @@
 * Tab切换
 * 关键词列表
 
+## 优化
+* npm --> cdn (vue, element-ui)
