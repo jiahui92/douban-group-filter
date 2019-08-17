@@ -10,9 +10,7 @@ const getDiscussionList = (id = 'CDzufang', maxPage = 10) => {
   return new Promise((resolve, reject) => {
     let timer = null;
     let page = 0;
-
     const list = [];
-
     const doubanUrl = `http://www.douban.com/group/${id}/discussion?start=`; // 西湖区租房
 
     timer = setInterval(() => {
@@ -51,17 +49,19 @@ const getDiscussionList = (id = 'CDzufang', maxPage = 10) => {
         });
       }).catch(e => {
         clearInterval(timer);
+        console.error(e.message);
         reject(e);
       });
 
       page++;
 
-    }, 500);
+    }, 300);
   })
 }
 
 router.get('/api/discussion/getList', async (ctx) => {
-  await getDiscussionList().then((list) => {
+  const q = ctx.query;
+  await getDiscussionList(q.id, q.maxPage).then((list) => {
     handleApiReturn(ctx, list);
   }).catch((err) => {
     handleApiReturn(ctx, [], err.message);

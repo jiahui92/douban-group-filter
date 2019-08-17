@@ -4,6 +4,7 @@
 ## 启动
 * yarn install
 * yarn server
+* node server/index.js
 * yarn build
 
 ## 选型
