@@ -15,7 +15,7 @@ const getDiscussionList = (id = 'CDzufang', maxPage = 10) => {
 
     timer = setInterval(() => {
 
-      if (page === maxPage) {
+      if (page == maxPage) {
         clearInterval(timer);
         resolve(list);
         return;
