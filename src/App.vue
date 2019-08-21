@@ -147,7 +147,7 @@ export default {
 
 <style>
 body {
-  padding: 5rem;
+  padding: 10vw;
 }
 </style>
 
@@ -162,6 +162,7 @@ body {
     margin-right: 0.5rem;
   }
   .extra-tip {
+    display: inline-block;
     margin-left: 1rem;
     color: grey;
   }
