@@ -1,5 +1,6 @@
 const axios = require('axios');
 const cheerio = require('cheerio');
+const serve = require('koa-static');
 const Koa = require('koa');
 const Router = require('koa-router');
 const app = new Koa();
@@ -69,5 +70,6 @@ router.get('/api/discussion/getList', async (ctx) => {
 })
 
 app.use(router.routes());
+app.use(serve('dist'));
 
 app.listen(3333);

@@ -1,5 +1,5 @@
 {
-  "name": "test1",
+  "name": "douban-group-filter",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -14,6 +14,7 @@
     "element-ui": "^2.4.5",
     "koa": "^2.7.0",
     "koa-router": "^7.4.0",
+    "koa-static": "^5.0.0",
     "vue": "^2.6.10"
   },
   "devDependencies": {
