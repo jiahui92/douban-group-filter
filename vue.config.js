@@ -6,5 +6,11 @@ module.exports = {
                 changeOrigin: true,
             }
         }
+    },
+    configureWebpack: {
+        externals: {
+            'vue': 'Vue',
+            'element-ui': 'ELEMENT'
+        }
     }
 }
