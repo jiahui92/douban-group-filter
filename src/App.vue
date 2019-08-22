@@ -17,6 +17,11 @@
     <div class="filter-line">
       <label>设置屏蔽关键词</label>
       <ElSelect v-bind="selectProps" :value="blackList" @change="onFilterChange('blackList', $event)" placeholder="请输入屏蔽关键词" />
+    </div>
+
+    <div class="filter-line">
+      <label>显示中介信息</label>
+      <ElSwitch :value="isShowAgent" @change="onFilterChange('isShowAgent', $event)" />
       <i v-if="!isLoading" class="extra-tip">共有{{ cList.length }}个搜索结果</i>
     </div>
 
@@ -25,11 +30,14 @@
     </ElTabs>
 
     <div class="list" v-loading="isLoading">
-      <div v-for="item in cList" :key="item.link">
-        <a :href="item.link" :class="item.className" target="_blank">{{ item.title }}</a>
+      <div v-for="t in cList" :key="t.link">
+        <a :href="t.link" :class="t.className" target="_blank">
+          {{ t.title }}
+          <i v-if="t.isAgent" class="el-icon-question" title="疑为中介（发布多个帖子 或者 豆瓣名称为“豆友xxxx”）"></i>
+        </a>
       </div>
     </div>
-    
+
     <!-- 返回顶部 -->
     <ElBacktop />
 
@@ -47,7 +55,7 @@ export default {
 
     function getStore (field) {
       const s = localStorage.getItem(field);
-      return s ? JSON.parse(s) : [];
+      return JSON.parse(s);
     }
 
     let tabs = getStore('tabs');
@@ -66,31 +74,50 @@ export default {
       cache: {}, // 缓存list数据
       activeTab: tabs[0] || '',
       tabs, // 兜底放一个成都租房小组
-      importantList: getStore('importantList'), // 置顶关键词
-      blackList: getStore('blackList'), // 黑名单列表，过滤关键词
+      isShowAgent: getStore('isShowAgent'), // 是否显示中介信息
+      importantList: getStore('importantList') || [], // 置顶关键词
+      blackList: getStore('blackList') || [], // 黑名单列表，过滤关键词
     }
   },
 
   computed: {
     cList () {
-      const list = [];
+      let cList = [];
+      const list = (this.cache[this.activeTab] || []);
+      const countObj = {};
 
-      (this.cache[this.activeTab] || []).forEach(item => {
+      // 发帖计数
+      list.forEach(item => {
+        countObj[item.authorName] = (countObj[item.authorName] || 0) + 1;
+      });
+
+      list.forEach(item => {
         const fn = val => item.title.indexOf(val) !== -1;
         // 黑名单过滤
         if (!this.blackList.some(fn)) {
           // 重点关注
           const isImportant = this.importantList.some(fn);
-          list.push({
+          const an = item.authorName;
+          // 是否“疑似中介”: 发帖次数大于1 或者 名称是“豆友xxx”
+          const isAgent = countObj[an] > 1 || an.indexOf(/^豆友\n+$/) !== -1;
+          const className = isImportant ? 'important' : '';
+
+          cList.push({
             ...item,
             isImportant,
-            className: isImportant ? 'important' : '',
+            isAgent,
+            className,
           });
         }
       });
 
+      // 过滤中介信息
+      if (!this.isShowAgent) {
+        cList = cList.filter(t => !t.isAgent);
+      }
+
       // 重点关注的置顶
-      return list.sort((a, b) => a.isImportant > b.isImportant ? -1 : 1);
+      return cList.sort((a, b) => a.isImportant > b.isImportant ? -1 : 1);
     }
   },
 
@@ -153,7 +180,7 @@ body {
 
 <style lang="less" scoped>
 .filter-line {
-  margin-bottom: 0.3rem;
+  margin-bottom: 0.5rem;
   font-size: 0.8rem;
   label {
     text-align: right;
@@ -184,6 +211,10 @@ body {
   }
   .important {
     color: #ff5777;
+  }
+  .el-icon-question {
+    color: red;
+    opacity: 0.5;
   }
 }
 </style>
