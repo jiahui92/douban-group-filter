@@ -17,12 +17,12 @@
     <div class="filter-line">
       <label>设置屏蔽关键词</label>
       <ElSelect v-bind="selectProps" :value="blackList" @change="onFilterChange('blackList', $event)" placeholder="请输入屏蔽关键词" />
+      <i v-if="!isLoading" class="extra-tip">共有{{ cList.length }}个搜索结果</i>
     </div>
 
     <div class="filter-line">
       <label>显示中介信息</label>
       <ElSwitch :value="isShowAgent" @change="onFilterChange('isShowAgent', $event)" />
-      <i v-if="!isLoading" class="extra-tip">共有{{ cList.length }}个搜索结果</i>
     </div>
 
     <ElTabs v-if="tabs.length > 1" @tab-click="tabClick">
