@@ -58,7 +58,7 @@ export default {
       return JSON.parse(s);
     }
 
-    let tabs = getStore('tabs');
+    let tabs = getStore('tabs') || [];
     tabs = tabs.length ? tabs : ['CDzufang'];
 
     return {
