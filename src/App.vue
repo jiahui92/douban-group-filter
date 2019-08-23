@@ -32,8 +32,8 @@
     <div class="list" v-loading="isLoading">
       <div v-for="t in cList" :key="t.link">
         <a :href="t.link" :class="t.className" target="_blank">
-          {{ t.title }}
           <i v-if="t.isAgent" class="el-icon-question" title="疑为中介（发布多个帖子 或者 豆瓣名称为“豆友xxxx”）"></i>
+          {{ t.title }}
         </a>
       </div>
     </div>
@@ -98,8 +98,8 @@ export default {
           // 重点关注
           const isImportant = this.importantList.some(fn);
           const an = item.authorName;
-          // 是否“疑似中介”: 发帖次数大于1 或者 名称是“豆友xxx”
-          const isAgent = countObj[an] > 1 || an.indexOf(/^豆友\n+$/) !== -1;
+          // 是否“疑似中介”: 发帖次数大于2 或者 名称是“豆友xxx”
+          const isAgent = countObj[an] > 2 || an.indexOf(/^豆友\n+$/) !== -1;
           const className = isImportant ? 'important' : '';
 
           cList.push({
@@ -174,7 +174,7 @@ export default {
 
 <style>
 body {
-  padding: 10vw;
+  padding: 8vw;
 }
 </style>
 
@@ -205,6 +205,7 @@ body {
     max-width: 100%;
     overflow: hidden;
     text-overflow: ellipsis;
+    text-decoration: none;
   }
   a:visited {
     color: grey !important;
