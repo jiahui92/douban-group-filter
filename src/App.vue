@@ -99,7 +99,7 @@ export default {
           const isImportant = this.importantList.some(fn);
           const an = item.authorName;
           // 是否“疑似中介”: 发帖次数大于2 或者 名称是“豆友xxx”
-          const isAgent = countObj[an] > 2 || an.indexOf(/^豆友\n+$/) !== -1;
+          const isAgent = countObj[an] > 2 || /^豆友\d+$/.test(an);
           const className = isImportant ? 'important' : '';
 
           cList.push({
@@ -132,12 +132,10 @@ export default {
       const id = this.activeTab;
       if (this.cache[id]) {
         this.isLoading = false;
-        this.list = this.cache[id];
         return;
       }
 
       this.isLoading = true;
-      this.list = [];
       axios({
         url: '/api/discussion/getList',
         params: {
