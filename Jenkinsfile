@@ -4,14 +4,16 @@ pipeline {
     stage('build') {
       steps {
         withNPM() {
-          sh '''npm i
-'''
+          sh '''
+            echo $PATH
+            node -v
+            npm -v
+            npm i
+            npm run build
+          '''
         }
 
       }
     }
-  }
-  environment {
-    echo = 'start'
   }
 }
